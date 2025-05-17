@@ -7,6 +7,7 @@ pkgs.mkShell {
     cmake
     mupdf-headless
     ninja
+    pkg-config
     qt6.full
     qtcreator
   ];
