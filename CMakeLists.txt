@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.19)
 project(Plata LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)   # Qt6
+find_package(PkgConfig REQUIRED)                         # pkg-config
+pkg_check_modules(MUPDF REQUIRED mupdf)                  # MuPDF
 
 qt_standard_project_setup()
 
@@ -13,14 +15,17 @@ qt_add_executable(plata
     src/plata.ui
 )
 
-target_link_libraries(plata
-    PRIVATE
-        Qt::Core
-        Qt::Widgets
+target_include_directories(plata PRIVATE
+    ${MUPDF_INCLUDE_DIRS}
+)
+
+target_link_libraries(plata PRIVATE
+    Qt::Core
+    Qt::Widgets
+    ${MUPDF_LIBRARIES}
 )
 
 include(GNUInstallDirs)
-
 install(TARGETS plata
     BUNDLE  DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

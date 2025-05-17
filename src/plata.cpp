@@ -1,5 +1,6 @@
 #include "plata.h"
 #include "ui_plata.h"
+#include <mupdf/fitz.h>
 #include <QScrollArea>
 #include <QFileDialog>
 
@@ -9,6 +10,8 @@ Plata::Plata(QWidget *parent) : QMainWindow(parent), ui(new Ui::Plata)
     QScrollArea *scrollarea = new QScrollArea();
     this->setCentralWidget(scrollarea);
     connect(ui->actionOpen, &QAction::triggered, this, &Plata::open_document);
+
+    fz_context* ctx = fz_new_context(NULL, NULL, FZ_STORE_UNLIMITED);
 }
 
 Plata::~Plata() { delete ui; }
