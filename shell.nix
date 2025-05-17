@@ -3,6 +3,7 @@
 }:
 
 pkgs.mkShell {
+  name = "plata";
   buildInputs = with pkgs; [
     cmake
     mupdf-headless
