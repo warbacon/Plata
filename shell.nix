@@ -9,6 +9,13 @@ pkgs.mkShell {
     mupdf-headless
     ninja
     pkg-config
+    freetype
+    gumbo
+    harfbuzz
+    jbig2dec
+    libjpeg
+    openjpeg
+    brotli
     qt6.full
     qtcreator
   ];
