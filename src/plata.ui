@@ -41,8 +41,8 @@
    <property name="text">
     <string>Open document</string>
    </property>
-   <property name="toolTip">
-    <string>Open a PDF</string>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
