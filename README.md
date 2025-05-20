@@ -27,7 +27,7 @@ evolves.
 
 - [x] Basic user interface implementation
 - [x] PDF rendering functionality
-- [ ] Cross-platform support (Windows compatibility)
+- [x] Cross-platform support (Windows compatibility)
 - [ ] Application icon
 - [ ] Installation system / distribution packaging
 - [ ] Table of contents
