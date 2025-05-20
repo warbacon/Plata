@@ -31,6 +31,8 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionOpen"/>
+   <addaction name="actionZoom_in"/>
+   <addaction name="actionZoom_out"/>
   </widget>
   <action name="actionOpen">
    <property name="icon">
@@ -41,6 +43,34 @@
    </property>
    <property name="toolTip">
     <string>Open a PDF</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionZoom_in">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::ZoomIn"/>
+   </property>
+   <property name="text">
+    <string>Zoom in</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl++</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionZoom_out">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::ZoomOut"/>
+   </property>
+   <property name="text">
+    <string>Zoom out</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
