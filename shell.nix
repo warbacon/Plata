@@ -9,14 +9,13 @@ pkgs.mkShell {
     mupdf-headless
     ninja
     pkg-config
-    freetype
-    gumbo
-    harfbuzz
-    jbig2dec
-    libjpeg
-    openjpeg
-    brotli
     qt6.full
     qtcreator
   ];
+
+  shellHook = ''
+    export C_INCLUDE_PATH=${pkgs.mupdf}/include/mupdf
+    export CPLUS_INCLUDE_PATH=${pkgs.mupdf}/include/mupdf
+    export LIBRARY_PATH=${pkgs.mupdf}/lib
+  '';
 }
