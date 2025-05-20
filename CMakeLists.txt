@@ -1,9 +1,23 @@
 cmake_minimum_required(VERSION 3.19)
 project(Plata LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)   # Qt6
-find_package(PkgConfig REQUIRED)                         # pkg-config
-pkg_check_modules(MUPDF REQUIRED mupdf)                  # MuPDF
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
+
+set(MUPDF_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/mupdf/include")
+
+if(WIN32)
+    set(MUPDF_LIBRARY_DEBUG "${CMAKE_SOURCE_DIR}/mupdf/platform/win32/x64/Debug/libmupdf.lib")
+    set(MUPDF_LIBRARY_RELEASE "${CMAKE_SOURCE_DIR}/mupdf/platform/win32/x64/Release/libmupdf.lib")
+
+    set(MUPDF_LIBRARY
+        $<$<CONFIG:Debug>:${MUPDF_LIBRARY_DEBUG}>
+        $<$<CONFIG:Release>:${MUPDF_LIBRARY_RELEASE}>
+    )
+elseif(UNIX)
+    set(MUPDF_LIBRARY "${CMAKE_SOURCE_DIR}/mupdf/build/release/libmupdf.a")
+else()
+    message(FATAL_ERROR "NOT SUPPORTED")
+endif()
 
 qt_standard_project_setup()
 
@@ -15,14 +29,12 @@ qt_add_executable(plata
     src/plata.ui
 )
 
-target_include_directories(plata PRIVATE
-    ${MUPDF_INCLUDE_DIRS}
-)
+target_include_directories(plata PRIVATE ${MUPDF_INCLUDE_DIR})
 
 target_link_libraries(plata PRIVATE
     Qt::Core
     Qt::Widgets
-    ${MUPDF_LIBRARIES}
+    ${MUPDF_LIBRARY}
 )
 
 include(GNUInstallDirs)
