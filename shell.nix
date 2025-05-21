@@ -12,10 +12,4 @@ pkgs.mkShell {
     qt6.full
     qtcreator
   ];
-
-  shellHook = ''
-    export C_INCLUDE_PATH=${pkgs.mupdf}/include/mupdf
-    export CPLUS_INCLUDE_PATH=${pkgs.mupdf}/include/mupdf
-    export LIBRARY_PATH=${pkgs.mupdf}/lib
-  '';
 }
