@@ -83,3 +83,6 @@ CMakeLists.txt.user*
 
 # Cland cache
 .cache/clangd/index
+
+# Visual Studio things
+mupdf/platform/win32/.vs/mupdf
