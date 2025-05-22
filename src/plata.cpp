@@ -13,42 +13,42 @@ Plata::Plata(QWidget *parent) : QMainWindow(parent), ui(new Ui::Plata)
 {
     ui->setupUi(this);
 
-    scrollArea = new QScrollArea(this);
-    scrollArea->setWidgetResizable(true);
+    m_scrollArea = new QScrollArea(this);
+    m_scrollArea->setWidgetResizable(true);
 
-    documentContainer = new QWidget(scrollArea);
-    layout = new QVBoxLayout(documentContainer);
-    layout->setAlignment(Qt::AlignHCenter);
-    documentContainer->setLayout(layout);
+    m_documentContainer = new QWidget(m_scrollArea);
+    m_layout = new QVBoxLayout(m_documentContainer);
+    m_layout->setAlignment(Qt::AlignHCenter);
+    m_documentContainer->setLayout(m_layout);
 
-    scrollArea->setWidget(documentContainer);
-    this->setCentralWidget(scrollArea);
+    m_scrollArea->setWidget(m_documentContainer);
+    this->setCentralWidget(m_scrollArea);
 
     connect(ui->actionOpen, &QAction::triggered, this, &Plata::open_document);
     connect(ui->actionZoom_in, &QAction::triggered, this, &Plata::zoom_in);
     connect(ui->actionZoom_out, &QAction::triggered, this, &Plata::zoom_out);
 
-    ctx = fz_new_context(nullptr, nullptr, FZ_STORE_UNLIMITED);
-    if (!ctx) {
+    m_ctx = fz_new_context(nullptr, nullptr, FZ_STORE_UNLIMITED);
+    if (!m_ctx) {
         qWarning("Can't create MuPDF context");
         return;
     }
 
-    fz_register_document_handlers(ctx);
+    fz_register_document_handlers(m_ctx);
 }
 
 Plata::~Plata()
 {
     close_document();
-    fz_drop_context(ctx);
+    fz_drop_context(m_ctx);
     delete ui;
 }
 
 void Plata::change_zoom(int value)
 {
-    zoom += value;
-    if (current_doc) {
-        render_pdf(current_doc);
+    m_zoom += value;
+    if (m_current_doc) {
+        render_pdf(m_current_doc);
     }
 }
 
@@ -62,11 +62,11 @@ void Plata::zoom_out()
     change_zoom(-50);
 }
 
-// Helper method to clear the layout and delete widgets
+// Helper method to clear the m_layout and delete widgets
 void Plata::clear_layout()
 {
     QLayoutItem *child;
-    while ((child = layout->takeAt(0)) != nullptr) {
+    while ((child = m_layout->takeAt(0)) != nullptr) {
         delete child->widget();  // delete QLabel
         delete child;            // delete QLayoutItem
     }
@@ -75,9 +75,9 @@ void Plata::clear_layout()
 // Helper method to close and free the current document if it exists
 void Plata::close_document()
 {
-    if (current_doc) {
-        fz_drop_document(ctx, current_doc);
-        current_doc = nullptr;
+    if (m_current_doc) {
+        fz_drop_document(m_ctx, m_current_doc);
+        m_current_doc = nullptr;
     }
 }
 
@@ -86,18 +86,18 @@ void Plata::render_pdf(fz_document *doc)
 {
     clear_layout();
 
-    fz_try(ctx)
+    fz_try(m_ctx)
     {
-        const fz_matrix ctm = fz_scale(zoom / 100.0f, zoom / 100.0f);
+        const fz_matrix ctm = fz_scale(m_zoom / 100.0f, m_zoom / 100.0f);
 
-        for (int i = 0; i < current_doc_pages; ++i) {
+        for (int i = 0; i < m_current_doc_pages; ++i) {
             fz_pixmap *pix = nullptr;
 
-            fz_try(ctx)
+            fz_try(m_ctx)
             {
-                pix = fz_new_pixmap_from_page_number(ctx, doc, i, ctm, fz_device_rgb(ctx), 0);
+                pix = fz_new_pixmap_from_page_number(m_ctx, doc, i, ctm, fz_device_rgb(m_ctx), 0);
             }
-            fz_catch(ctx)
+            fz_catch(m_ctx)
             {
                 qWarning("Can't render page %d", i);
                 continue;
@@ -110,13 +110,13 @@ void Plata::render_pdf(fz_document *doc)
             pageLabel->setPixmap(pixmap);
             pageLabel->adjustSize();
 
-            layout->addWidget(pageLabel);
-            fz_drop_pixmap(ctx, pix);
+            m_layout->addWidget(pageLabel);
+            fz_drop_pixmap(m_ctx, pix);
         }
     }
-    fz_catch(ctx)
+    fz_catch(m_ctx)
     {
-        fz_report_error(ctx);
+        fz_report_error(m_ctx);
         qWarning("Failed to render PDF document");
     }
 }
@@ -124,7 +124,7 @@ void Plata::render_pdf(fz_document *doc)
 // Opens a PDF file and renders it
 void Plata::open_document()
 {
-    zoom = 100.0f * devicePixelRatio();
+    m_zoom = 100.0f * devicePixelRatio();
 
     QString fileName = QFileDialog::getOpenFileName(this, "Open PDF", "", "PDF Files (*.pdf);;All Files (*)");
     if (fileName.isEmpty())
@@ -135,16 +135,16 @@ void Plata::open_document()
     // Free the previously loaded document if any
     close_document();
 
-    fz_try(ctx)
+    fz_try(m_ctx)
     {
-        current_doc = fz_open_document(ctx, fileName.toUtf8().constData());
-        current_doc_pages = fz_count_pages(ctx, current_doc);
-        render_pdf(current_doc);
+        m_current_doc = fz_open_document(m_ctx, fileName.toUtf8().constData());
+        m_current_doc_pages = fz_count_pages(m_ctx, m_current_doc);
+        render_pdf(m_current_doc);
     }
-    fz_catch(ctx)
+    fz_catch(m_ctx)
     {
-        fz_report_error(ctx);
+        fz_report_error(m_ctx);
         qWarning("Failed to open document");
-        current_doc = nullptr;
+        m_current_doc = nullptr;
     }
 }
