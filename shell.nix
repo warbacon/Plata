@@ -9,7 +9,7 @@ pkgs.mkShell {
     mupdf-headless
     ninja
     pkg-config
-    qt6.full
+    qt6.qtbase
     qtcreator
   ];
 }
