@@ -29,13 +29,17 @@ evolves.
 - [x] PDF rendering functionality
 - [x] Cross-platform support (Windows compatibility)
 - [ ] Application icon
+- [ ] I have to learn how to use cmake for real....
 - [ ] Installation system / distribution packaging
-- [ ] Table of contents
-- [ ] Recent PDFs in UI
+- [ ] Translation support
 - [ ] Performance optimizations
-- [ ] Touchpad gestures and mouse wheel zoom support
+- [ ] Mouse wheel zoom
+- [ ] Touchpad gestures 
 - [ ] Selectable text in PDFs
 - [ ] Text search functionality
+- [ ] Theming
+- [ ] Tabs
+- [ ] Dark mode for PDFs
 
 ## 🪪 License
 
