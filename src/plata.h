@@ -26,14 +26,14 @@ private slots:
 private:
     Ui::Plata *ui;
 
-    QScrollArea *scrollArea;
-    QWidget *documentContainer;
-    QVBoxLayout *layout;
+    QScrollArea *m_scrollArea;
+    QWidget *m_documentContainer;
+    QVBoxLayout *m_layout;
 
-    fz_context *ctx = nullptr;
-    fz_document *current_doc = nullptr;
-    int current_doc_pages = 0;
-    float zoom = 100.0f;
+    fz_context *m_ctx = nullptr;
+    fz_document *m_current_doc = nullptr;
+    int m_current_doc_pages = 0;
+    float m_zoom = 100.0f;
 
     void change_zoom(int value);
     void render_pdf(fz_document *doc);
