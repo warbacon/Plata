@@ -18,6 +18,9 @@
    <property name="movable">
     <bool>false</bool>
    </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+   </property>
    <property name="floatable">
     <bool>false</bool>
    </property>
@@ -30,6 +33,9 @@
    <addaction name="actionOpen_document"/>
   </widget>
   <action name="actionOpen_document">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::DocumentOpen"/>
+   </property>
    <property name="text">
     <string>Open document</string>
    </property>
