@@ -69,7 +69,6 @@ CMakeLists.txt.user*
 *.pyc
 
 # Binaries
-# --------
 *.dll
 *.exe
 
@@ -81,8 +80,8 @@ CMakeLists.txt.user*
 .uic/
 /build*/
 
-# Cland cache
-.cache/clangd/index
+# Clangd cache
+.cache/
 
-# Visual Studio things
-mupdf/platform/win32/.vs/mupdf
+# Direnv data
+.direnv

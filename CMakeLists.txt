@@ -1,53 +1,94 @@
-cmake_minimum_required(VERSION 3.19)
-project(Plata LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.16)
+project(Plata VERSION 0.1 LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
+# ==============================================================================
+# General CMake configuration
+# ==============================================================================
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if(WIN32)
-    set(MUPDF_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/mupdf/include")
+# Qt configuration
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
-    set(MUPDF_LIBRARY_DEBUG "${CMAKE_SOURCE_DIR}/mupdf/platform/win32/x64/Debug/libmupdf.lib")
-    set(MUPDF_LIBRARY_RELEASE "${CMAKE_SOURCE_DIR}/mupdf/platform/win32/x64/Release/libmupdf.lib")
+# ==============================================================================
+# Dependencies
+# ==============================================================================
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
-    set(MUPDF_LIBRARIES
-        $<$<CONFIG:Debug>:${MUPDF_LIBRARY_DEBUG}>
-        $<$<CONFIG:Release>:${MUPDF_LIBRARY_RELEASE}>
-    )
-elseif(UNIX)
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(MUPDF REQUIRED mupdf)
-else()
-    message(FATAL_ERROR "NOT SUPPORTED")
-endif()
-
-qt_standard_project_setup()
-
-qt_add_executable(plata
-    WIN32 MACOSX_BUNDLE
-    src/main.cpp
-    src/plata.cpp
-    src/plata.h
-    src/plata.ui
+# ==============================================================================
+# Project files
+# ==============================================================================
+set(PROJECT_SOURCES
+    main.cpp
+    mainwindow.cpp
+    mainwindow.h
+    mainwindow.ui
 )
 
-target_include_directories(plata PRIVATE ${MUPDF_INCLUDE_DIR})
+# ==============================================================================
+# Build MuPDF as external dependency
+# ==============================================================================
+include(ExternalProject)
 
-target_link_libraries(plata PRIVATE
-    Qt::Core
-    Qt::Widgets
-    ${MUPDF_LIBRARIES}
+set(MUPDF_VERSION "1.26.11")
+set(MUPDF_URL "https://casper.mupdf.com/downloads/archive/mupdf-${MUPDF_VERSION}-source.tar.gz")
+set(MUPDF_HASH "67798ec73ba8b70c45893e07497a2107a551f05a")
+
+ExternalProject_Add(
+    mupdf
+    URL ${MUPDF_URL}
+    URL_HASH SHA1=${MUPDF_HASH}
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND make libs
+    BUILD_IN_SOURCE TRUE
+    INSTALL_COMMAND ""
 )
 
+# MuPDF build directory
+ExternalProject_Get_Property(mupdf SOURCE_DIR)
+set(MUPDF_INCLUDE_DIR "${SOURCE_DIR}/include")
+set(MUPDF_LIB_DIR "${SOURCE_DIR}/build/release")
+
+# ==============================================================================
+# Main executable
+# ==============================================================================
+qt_add_executable(Plata MANUAL_FINALIZATION ${PROJECT_SOURCES})
+
+# Dependencies
+add_dependencies(Plata mupdf)
+
+# Include directories
+target_include_directories(Plata PRIVATE ${MUPDF_INCLUDE_DIR})
+
+# Link libraries
+target_link_libraries(Plata PRIVATE
+    Qt6::Widgets
+    ${MUPDF_LIB_DIR}/libmupdf.a
+)
+
+# Executable properties
+set_target_properties(Plata PROPERTIES
+    MACOSX_BUNDLE TRUE
+    WIN32_EXECUTABLE TRUE
+    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+)
+
+# ==============================================================================
+# Installation
+# ==============================================================================
 include(GNUInstallDirs)
-install(TARGETS plata
-    BUNDLE  DESTINATION .
+
+install(TARGETS Plata
+    BUNDLE DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-qt_generate_deploy_app_script(
-    TARGET plata
-    OUTPUT_SCRIPT deploy_script
-    NO_UNSUPPORTED_PLATFORM_ERROR
-)
-install(SCRIPT ${deploy_script})
+# ==============================================================================
+# Finalization
+# ==============================================================================
+qt_finalize_executable(Plata)

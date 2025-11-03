@@ -4,12 +4,13 @@
 
 pkgs.mkShell {
   name = "plata";
-  buildInputs = with pkgs; [
+  packages = with pkgs; [
     cmake
-    mupdf-headless
+    just
     ninja
     pkg-config
     qt6.qtbase
-    qtcreator
+    qt6.qtsvg
+    qt6.qttools
   ];
 }
