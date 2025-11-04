@@ -37,6 +37,7 @@ set(MUPDF_SOURCE_DIR "${MUPDF_PREFIX}/src/mupdf")
 set(MUPDF_INCLUDE_DIR "${MUPDF_SOURCE_DIR}/include")
 set(MUPDF_LIB_DIR "${MUPDF_SOURCE_DIR}/build/release")
 set(MUPDF_LIB_PATH "${MUPDF_LIB_DIR}/libmupdf.a")
+set(MUPDF_THIRD_LIB_PATH "${MUPDF_LIB_DIR}/libmupdf-third.a")
 
 # Create the include directory if it doesn't exist
 file(MAKE_DIRECTORY ${MUPDF_INCLUDE_DIR})
@@ -51,7 +52,7 @@ ExternalProject_Add(
     BUILD_COMMAND make libs
     BUILD_IN_SOURCE TRUE
     INSTALL_COMMAND ""
-    BUILD_BYPRODUCTS ${MUPDF_LIB_PATH}
+    BUILD_BYPRODUCTS ${MUPDF_LIB_PATH} ${MUPDF_THIRD_LIB_PATH}
 )
 
 # Create imported library for MuPDF
@@ -62,6 +63,13 @@ set_target_properties(mupdf_lib PROPERTIES
 )
 add_dependencies(mupdf_lib mupdf)
 
+# Create imported library for MuPDF third-party dependencies
+add_library(mupdf_third_lib STATIC IMPORTED)
+set_target_properties(mupdf_third_lib PROPERTIES
+    IMPORTED_LOCATION ${MUPDF_THIRD_LIB_PATH}
+)
+add_dependencies(mupdf_third_lib mupdf)
+
 # ==============================================================================
 # Main executable
 # ==============================================================================
@@ -71,6 +79,7 @@ qt_add_executable(Plata MANUAL_FINALIZATION ${PROJECT_SOURCES})
 target_link_libraries(Plata PRIVATE
     Qt6::Widgets
     mupdf_lib
+    mupdf_third_lib
 )
 
 # Executable properties
