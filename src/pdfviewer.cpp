@@ -1,5 +1,5 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "pdfviewer.h"
+#include "ui_pdfviewer.h"
 
 #include <QFileDialog>
 #include <QLabel>

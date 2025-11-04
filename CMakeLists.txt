@@ -20,9 +20,9 @@ qt_standard_project_setup()
 # ==============================================================================
 set(PROJECT_SOURCES
     src/main.cpp
-    src/mainwindow.cpp
-    src/mainwindow.h
-    src/mainwindow.ui
+    src/pdfviewer.cpp
+    src/pdfviewer.h
+    src/pdfviewer.ui
     src/resources.qrc
 )
 

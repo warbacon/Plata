@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>plata_icon.svg</file>
+        <file>plata.svg</file>
     </qresource>
 </RCC>
