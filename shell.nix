@@ -4,6 +4,7 @@
 
 pkgs.mkShell {
   name = "plata";
+
   packages = with pkgs; [
     cmake
     just
@@ -13,4 +14,8 @@ pkgs.mkShell {
     qt6.qtsvg
     qt6.qttools
   ];
+
+  shellHook = ''
+    export QT_PLUGIN_PATH="${pkgs.qt6.qtbase}/lib/qt-6/plugins:${pkgs.qt6.qtsvg}/lib/qt-6/plugins"
+  '';
 }
