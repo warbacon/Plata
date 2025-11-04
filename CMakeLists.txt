@@ -77,17 +77,17 @@ add_dependencies(mupdf_third_lib mupdf)
 # ==============================================================================
 # Main executable
 # ==============================================================================
-qt_add_executable(Plata MANUAL_FINALIZATION ${PROJECT_SOURCES})
+qt_add_executable(plata MANUAL_FINALIZATION ${PROJECT_SOURCES})
 
 # Link libraries
-target_link_libraries(Plata PRIVATE
+target_link_libraries(plata PRIVATE
     Qt6::Widgets
     mupdf_lib
     mupdf_third_lib
 )
 
 # Executable properties
-set_target_properties(Plata PROPERTIES
+set_target_properties(plata PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
@@ -97,7 +97,7 @@ set_target_properties(Plata PROPERTIES
 # ==============================================================================
 # Installation
 # ==============================================================================
-install(TARGETS Plata
+install(TARGETS plata
     BUNDLE DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
@@ -105,4 +105,4 @@ install(TARGETS Plata
 # ==============================================================================
 # Finalization
 # ==============================================================================
-qt_finalize_executable(Plata)
+qt_finalize_executable(plata)

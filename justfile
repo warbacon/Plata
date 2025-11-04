@@ -2,7 +2,7 @@ alias b := build
 alias c := configure
 
 run: build
-    ./build/Plata
+    ./build/plata
 
 build:
     cmake --build build/
