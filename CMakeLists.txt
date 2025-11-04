@@ -11,6 +11,8 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 # ==============================================================================
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
 qt_standard_project_setup()
 
 # ==============================================================================
