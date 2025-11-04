@@ -5,10 +5,10 @@ run: build
     ./build/Plata
 
 build:
-    ninja -C build/
+    cmake --build build/
 
 configure:
-    cmake -B build -G Ninja .
+    cmake -B build -G Ninja {{justfile_directory()}}
 
 clean:
-    rm -rf build
+    rm -rf build/
