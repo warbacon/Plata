@@ -9,6 +9,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 # ==============================================================================
 # General CMake configuration
 # ==============================================================================
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 qt_standard_project_setup()
 
 # ==============================================================================
