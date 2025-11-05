@@ -21,10 +21,7 @@ void PDFViewer::open_document()
             .toUtf8()
             .constData();
 
-    float scaleFactor = devicePixelRatio();
-
-    QPixmap pixmap = m_renderer.createPixmap(scaleFactor, filename);
-    pixmap.setDevicePixelRatio(scaleFactor);
+    QPixmap pixmap = m_renderer.createPixmap(filename);
 
     QLabel *label = new QLabel;
     label->setPixmap(pixmap);

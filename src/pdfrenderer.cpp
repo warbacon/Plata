@@ -1,7 +1,9 @@
 #include "pdfrenderer.h"
 
+#include <QGuiApplication>
 #include <QImage>
 #include <QPixmap>
+#include <QScreen>
 #include <mupdf/fitz.h>
 
 PDFRenderer::PDFRenderer() : m_ctx(fz_new_context(nullptr, nullptr, FZ_STORE_UNLIMITED))
@@ -9,7 +11,7 @@ PDFRenderer::PDFRenderer() : m_ctx(fz_new_context(nullptr, nullptr, FZ_STORE_UNL
     fz_register_document_handlers(m_ctx);
 }
 
-QPixmap PDFRenderer::createPixmap(float scaleFactor, const char *filename)
+QPixmap PDFRenderer::createPixmap(const char *filename)
 {
     QPixmap pixmap;
     fz_pixmap *pix = nullptr;
@@ -17,13 +19,19 @@ QPixmap PDFRenderer::createPixmap(float scaleFactor, const char *filename)
 
     fz_try(m_ctx)
     {
-        const fz_matrix ctm = fz_scale(scaleFactor * 1.1f, scaleFactor * 1.1f);
-
         doc = fz_open_document(m_ctx, filename);
+
+        float baseZoom = QGuiApplication::primaryScreen()->logicalDotsPerInchX() / 72.0f;
+        float scaleFactor = QGuiApplication::primaryScreen()->devicePixelRatio();
+        float zoom = baseZoom * scaleFactor;
+        fz_matrix ctm = fz_scale(zoom, zoom);
+
         pix = fz_new_pixmap_from_page_number(m_ctx, doc, 0, ctm, fz_device_rgb(m_ctx), 0);
 
         pixmap = QPixmap::fromImage(
             QImage(pix->samples, pix->w, pix->h, pix->stride, QImage::Format_RGB888));
+
+        pixmap.setDevicePixelRatio(scaleFactor);
     }
     fz_always(m_ctx)
     {

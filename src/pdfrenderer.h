@@ -9,7 +9,7 @@ class PDFRenderer
 public:
     PDFRenderer();
     ~PDFRenderer();
-    QPixmap createPixmap(float scaleFactor, const char *filename);
+    QPixmap createPixmap(const char *filename);
 
 private:
     fz_context *m_ctx;
