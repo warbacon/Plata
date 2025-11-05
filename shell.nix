@@ -11,8 +11,6 @@ pkgs.mkShell {
     mupdf-headless
     ninja
     pkg-config
-    qt6.qtbase
-    qt6.qtsvg
     qt6.qttools
   ];
 
