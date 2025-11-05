@@ -17,7 +17,7 @@ PDFViewer::PDFViewer(QWidget *parent) : QMainWindow(parent), ui(new Ui::PDFViewe
 void PDFViewer::open_document()
 {
     const char *filename =
-        QFileDialog::getOpenFileName(this, "Open PDF - Plata", "", "PDF Files (*.pdf)")
+        QFileDialog::getOpenFileName(this, "Open PDF - Plata", getenv("HOME"), "PDF Files (*.pdf)")
             .toUtf8()
             .constData();
 
