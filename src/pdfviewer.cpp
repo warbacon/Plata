@@ -25,7 +25,7 @@ void PDFViewer::open_document()
 
     QLabel *label = new QLabel;
     label->setPixmap(pixmap);
-    label->setAlignment(Qt::AlignCenter);
+    label->setAlignment(Qt::AlignHCenter);
 
     QScrollArea *scrollArea = new QScrollArea(this);
     scrollArea->setWidget(label);
