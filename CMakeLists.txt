@@ -30,6 +30,8 @@ set(PROJECT_SOURCES
     src/main.cpp
     src/pdfviewer.cpp
     src/pdfviewer.h
+    src/pdfrenderer.cpp
+    src/pdfrenderer.h
     src/pdfviewer.ui
     src/resources.qrc
 )

@@ -1,21 +1,28 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef PDFVIEWER_H
+#define PDFVIEWER_H
 
+#include "pdfrenderer.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui
+{
+class PDFViewer;
+}
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class PDFViewer : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    PDFViewer(QWidget *parent = nullptr);
+    ~PDFViewer();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::PDFViewer *ui;
+    PDFRenderer m_renderer;
+    void open_document();
 };
-#endif // MAINWINDOW_H
+
+#endif // PDFVIEWER_H
