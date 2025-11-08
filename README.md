@@ -26,14 +26,15 @@
 
 - [x] Basic user interface implementation
 - [x] Application icon
-- [ ] PDF rendering
+- [x] Single PDF page rendering
+- [x] Tabs
+- [ ] Full PDF rendering
 - [ ] Zoom support
-- [ ] Windows compatibility
 - [ ] Packaging
 - [ ] Theming
-- [ ] Tabs
 - [ ] Selectable text
 - [ ] Text search
+- [ ] Windows compatibility
 
 ## 🤝 Contributing
 
