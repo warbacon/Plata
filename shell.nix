@@ -8,7 +8,6 @@ pkgs.mkShell {
   packages = with pkgs; [
     cmake
     just
-    mupdf-headless
     ninja
     pkg-config
     qt6.qttools
