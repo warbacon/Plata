@@ -1,32 +1,59 @@
 cmake_minimum_required(VERSION 3.28)
 project(Plata VERSION 0.1.0 LANGUAGES CXX)
 
-# ==============================================================================
-# Dependencies
-# ==============================================================================
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(MUPDF REQUIRED IMPORTED_TARGET mupdf)
-
-# ==============================================================================
-# CMake configuration
-# ==============================================================================
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_COLOR_DIAGNOSTICS ON)
 
-# Qt configuration
+# ==============================================================================
+# Qt
+# ==============================================================================
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
+qt_standard_project_setup()
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
-qt_standard_project_setup()
 
 # ==============================================================================
-# Project files
+# MuPDF
 # ==============================================================================
-set(PROJECT_SOURCES
+set(MUPDF_VERSION 1.26.11)
+set(MUPDF_HASH 67798ec73ba8b70c45893e07497a2107a551f05a)
+
+include(FetchContent)
+FetchContent_Declare(
+    mupdf
+    URL https://casper.mupdf.com/downloads/archive/mupdf-${MUPDF_VERSION}-source.tar.gz
+    URL_HASH SHA1=${MUPDF_HASH}
+)
+FetchContent_MakeAvailable(mupdf)
+
+set(MUPDF_LIBRARIES
+    ${mupdf_SOURCE_DIR}/build/release/libmupdf.a
+    ${mupdf_SOURCE_DIR}/build/release/libmupdf-third.a
+)
+
+add_custom_target(build_mupdf
+    COMMAND make libs
+    WORKING_DIRECTORY ${mupdf_SOURCE_DIR}
+    BYPRODUCTS ${MUPDF_LIBRARIES}
+    COMMENT "Building MuPDF..."
+)
+
+add_library(MuPDF::MuPDF INTERFACE IMPORTED GLOBAL)
+set_target_properties(MuPDF::MuPDF PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES ${mupdf_SOURCE_DIR}/include
+    INTERFACE_LINK_LIBRARIES "${MUPDF_LIBRARIES}"
+)
+add_dependencies(MuPDF::MuPDF build_mupdf)
+
+# ==============================================================================
+# Main executable
+# ==============================================================================
+qt_add_executable(plata MANUAL_FINALIZATION
     src/main.cpp
     src/pdfviewer.cpp
     src/pdfviewer.h
@@ -36,22 +63,9 @@ set(PROJECT_SOURCES
     src/resources.qrc
 )
 
-# ==============================================================================
-# Main executable
-# ==============================================================================
-qt_add_executable(plata MANUAL_FINALIZATION ${PROJECT_SOURCES})
-
-# Compiler warnings
-if(MSVC)
-    add_compile_options(/W4 /WX)
-else()
-    add_compile_options(-Wall -Wextra -pedantic -Werror)
-endif()
-
-# Link libraries
 target_link_libraries(plata PRIVATE
     Qt6::Widgets
-    PkgConfig::MUPDF
+    MuPDF::MuPDF
 )
 
 # Link-Time Optimization
