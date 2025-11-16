@@ -1,5 +1,5 @@
-#include "pdfviewer.h"
-#include "ui_pdfviewer.h"
+#include "plata.h"
+#include "ui_plata.h"
 
 #include <QFileDialog>
 #include <QFileInfo>

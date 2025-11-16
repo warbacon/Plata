@@ -73,11 +73,12 @@ add_dependencies(MuPDF::MuPDF build_mupdf)
 # ==============================================================================
 qt_add_executable(plata
     src/main.cpp
-    src/pdfviewer.cpp
-    src/pdfviewer.h
+    src/plata.cpp
+    src/plata.h
     src/pdfrenderer.cpp
     src/pdfrenderer.h
-    src/pdfviewer.ui
+
+    src/plata.ui
     src/resources.qrc
     src/appicon.rc
 )

@@ -1,4 +1,4 @@
-#include "pdfviewer.h"
+#include "plata.h"
 
 #include <QApplication>
 #include <QIcon>
