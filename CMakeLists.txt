@@ -71,7 +71,7 @@ add_dependencies(MuPDF::MuPDF build_mupdf)
 # ==============================================================================
 # Main executable
 # ==============================================================================
-qt_add_executable(plata MANUAL_FINALIZATION
+qt_add_executable(plata
     src/main.cpp
     src/pdfviewer.cpp
     src/pdfviewer.h
@@ -113,8 +113,9 @@ install(TARGETS plata
     BUNDLE DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
-
-# ==============================================================================
-# Finalization
-# ==============================================================================
-qt_finalize_executable(plata)
+qt_generate_deploy_app_script(
+    TARGET plata
+    OUTPUT_SCRIPT deploy_script
+    NO_UNSUPPORTED_PLATFORM_ERROR
+)
+install(SCRIPT ${deploy_script})
