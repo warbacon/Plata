@@ -28,13 +28,13 @@
 - [x] Application icon
 - [x] Single PDF page rendering
 - [x] Tabs
+- [x] Windows compatibility
 - [ ] Full PDF rendering
 - [ ] Zoom support
 - [ ] Packaging
 - [ ] Theming
 - [ ] Selectable text
 - [ ] Text search
-- [ ] Windows compatibility
 
 ## 🤝 Contributing
 

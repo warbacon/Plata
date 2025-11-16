@@ -31,14 +31,26 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(mupdf)
 
-set(MUPDF_LIBRARIES
-    ${mupdf_SOURCE_DIR}/build/release/libmupdf.a
-    ${mupdf_SOURCE_DIR}/build/release/libmupdf-third.a
-)
+if(WIN32)
+    set(MUPDF_LIBRARIES
+        ${mupdf_SOURCE_DIR}/platform/win32/x64/Debug/libmupdf.lib
+    )
+    set(MUPDF_BUILD_COMMAND
+        msbuild mupdf.sln /p:Configuration=Debug /p:Platform=x64 /p:PlatformToolset=v143 /t:libmupdf
+    )
+    set(MUPDF_WORKING_DIRECTORY ${mupdf_SOURCE_DIR}/platform/win32)
+else()
+    set(MUPDF_LIBRARIES
+        ${mupdf_SOURCE_DIR}/build/release/libmupdf.a
+        ${mupdf_SOURCE_DIR}/build/release/libmupdf-third.a
+    )
+    set(MUPDF_BUILD_COMMAND make libs)
+    set(MUPDF_WORKING_DIRECTORY ${mupdf_SOURCE_DIR})
+endif()
 
 add_custom_target(build_mupdf
-    COMMAND make libs
-    WORKING_DIRECTORY ${mupdf_SOURCE_DIR}
+    COMMAND ${MUPDF_BUILD_COMMAND}
+    WORKING_DIRECTORY ${MUPDF_WORKING_DIRECTORY}
     BYPRODUCTS ${MUPDF_LIBRARIES}
     COMMENT "Building MuPDF..."
 )
