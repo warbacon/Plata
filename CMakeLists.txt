@@ -79,6 +79,7 @@ qt_add_executable(plata
     src/pdfrenderer.h
     src/pdfviewer.ui
     src/resources.qrc
+    src/appicon.rc
 )
 
 target_link_libraries(plata PRIVATE

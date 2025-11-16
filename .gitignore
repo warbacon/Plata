@@ -85,3 +85,6 @@ CMakeLists.txt.user*
 
 # Direnv data
 .direnv
+
+# Exclude appicon.rc
+!src/appicon.rc
