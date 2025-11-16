@@ -26,26 +26,27 @@ There are no official packages yet, so you'll need to compile the project manual
 
 ### Linux/macOS
 
-Make sure you have **Qt6**, **CMake**, and **Make** installed.
+Make sure you have a **C/C++ compiler**, **Qt6**, **CMake**, and **Make**
+installed.
 
 ```bash
-cmake -G "Unix Makefiles" -B build .
-cmake --build build
+cmake -G "Unix Makefiles" -B ./build .
+cmake --build ./build
 ./build/plata
 ```
 
 ### Windows
 
-Install **Visual Studio 2022** and **Qt6**.
+Install **Visual Studio 2022**, **Qt6**, and **CMake**.
 
 > Replace `<Qt6 cmake config path>` with the path to your Qt6 installation
 > (usually something like `C:/Qt/6.x.x/msvc2022_64/lib/cmake`).
 
 ```bash
-cmake -B build -DCMAKE_PREFIX_PATH="<Qt6 cmake config path>" .
-cmake --build build
-windeployqt .\build\plata
-.\build\plata
+cmake -G "Visual Studio 17 2022" -B build -DCMAKE_PREFIX_PATH="<Qt6 cmake config path>" .
+cmake --build .\build --config Release
+windeployqt .\build\Release\plata
+.\build\Release\plata
 ```
 
 ## 🛣️ Development Roadmap
