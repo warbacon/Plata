@@ -8,7 +8,7 @@ build:
     cmake --build build/
 
 configure:
-    cmake -B build -G Ninja {{justfile_directory()}}
+    cmake -B build -G "Unix Makefiles" {{justfile_directory()}}
 
 clean:
     rm -rf build/
