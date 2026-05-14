@@ -4,7 +4,7 @@ alias c := configure
 run: build
     ./build/plata
 
-build:
+build: configure
     cmake --build build/
 
 configure:
